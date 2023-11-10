@@ -38,26 +38,25 @@ router.post("/login", async (req, res, next) => {
             res.render("auth/login", {errorMessage: "Please, enter username and password."});
             return;
         }
-        console.log("finding user", username);
+		console.log("finding user", username);
         const user = await User.findOne({username});
-        
-        console.log("user found: ", user);
-        const isUserPassCorrect = await bcrypt.compare(password, user.password);
-        // console.log("pass OK ", isUserPassCorrect);
         if (!user) {
-            console.log("NO USER");
-            res.render("index", {errorMessage: "User not found"})
+			console.log("NO USER");
+            return res.render("auth/login", {errorMessage: "User not found"})
         }
-        else if (isUserPassCorrect){
-            console.log("PASS OK", req.session.currentuser);
+        
+		console.log("user found: ", user);
+        const isUserPassCorrect = await bcrypt.compareSync(password, user.password);
+        // console.log("pass OK ", isUserPassCorrect);
+        if (isUserPassCorrect){
+            console.log("PASS OK", user);
             req.session.currentuser = user;
-            res.render("index", {user});
+            res.render("auth/user", {user});
         }
         else {
             console.log("Incorrect");
             res.render("auth/login", {errorMessage: "Incorrect user / password"});
         }
-    
     }
     catch {
         error => next(error);
