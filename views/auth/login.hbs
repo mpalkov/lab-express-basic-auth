@@ -1,0 +1,17 @@
+<div if="form">
+    <h2>Login</h2>
+
+    <form action="/login" method="post">
+        <label>User name
+            <input type="text" name="username">
+        </label>
+        <label>Password
+            <input type="password" name="password">
+        </label>
+        <button type="submit">Log In</button>
+
+        {{#if errorMessage}}
+            <p class="error">{{errorMessage}}</p>
+        {{/if}}
+    </form>
+</div>
