@@ -106,3 +106,11 @@ ul li {
 #logout-form button {
   width: 120px;
 }
+
+.flex-column {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	/* margin-left: auto;
+	margin-right: auto; */
+}

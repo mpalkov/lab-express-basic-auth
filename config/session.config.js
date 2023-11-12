@@ -18,7 +18,7 @@ module.exports = app => {
             },
             store: MongoStore.create({
                 mongoUrl: process.env.MONGODB_URI,
-                ttl: 60000 //ms
+                ttl:  60000 //ms
             })
         })
     );
