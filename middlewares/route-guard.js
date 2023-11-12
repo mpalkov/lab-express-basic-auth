@@ -1,14 +1,13 @@
 // checks if the user is logged in when trying to access a specific page
 const isLoggedIn = (req, res, next) => {
 	if (!req.session.currentuser) {
-		console.log("route-guard: User not logged in");
-		return res.redirect("/login");
+		return res.render("auth/login", {errorMessage: "Please, log in first"});
 	}
 	// if user is logged in, proceed
-	console.log("route-guard: User logged in, proceeding to next();");
 	next();
 };
 
+//check if user is logged out
 const isLoggedOut = (req, res, next) => {
 	if (req.session.currentuser) {
 		return res.render("index");

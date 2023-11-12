@@ -9,7 +9,7 @@ router.get("/signup", (req, res) => {
     res.render("auth/signup");
 })
 
-router.get("/login", (req, res) => {
+router.get("/login", isLoggedOut, (req, res) => {
     res.render("auth/login");
 })
 
@@ -34,28 +34,22 @@ router.post("/signup", async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
     try {
         const { username, password } = req.body;
-        console.log("TRYING TO LOG IN", username, password);
         if (username === '' || password === '') {
             res.render("auth/login", {errorMessage: "Please, enter username and password."});
             return;
         }
-		console.log("finding user", username);
         const user = await User.findOne({username});
         if (!user) {
-			console.log("NO USER");
             return res.render("auth/login", {errorMessage: "User not found"})
         }
         
-		console.log("user found: ", user);
         const isUserPassCorrect = await bcrypt.compare(password, user.password);
-        // console.log("pass OK ", isUserPassCorrect);
         if (isUserPassCorrect){
-            console.log("PASS OK", user);
+            console.log("LOGGED IN SUCCESSFULY", user);
             req.session.currentuser = user;
             res.render("auth/user", {user});
         }
         else {
-            console.log("Incorrect");
             res.render("auth/login", {errorMessage: "Incorrect user / password"});
         }
     git }
